@@ -1,0 +1,120 @@
+# 並列エージェントが同時に動いてる感を出すターミナル動画
+# 複数のログ行が高速で流れるパターン (バズ狙い)
+
+config:
+  command: null
+  cwd: null
+  env:
+    recording: 'true'
+  cols: 110
+  rows: 36
+  repeat: 0
+  quality: 100
+  frameDelay: auto
+  maxIdleTime: 2000
+  frameBox:
+    type: floating
+    title: 'Claude Code — 8 agents running in parallel'
+    style:
+      border: '0px black solid'
+      backgroundColor: '#0a0a0a'
+      margin: '0px'
+  cursorStyle: block
+  fontFamily: 'Cascadia Mono, Consolas, monospace'
+  fontSize: 13
+  lineHeight: 1.35
+  theme:
+    background: '#0a0a0a'
+    foreground: '#e0e0e0'
+    cursor: '#a78bfa'
+    green: '#4ade80'
+    yellow: '#fbbf24'
+    blue: '#60a5fa'
+    magenta: '#f472b6'
+    cyan: '#22d3ee'
+
+records:
+  - delay: 0
+    content: "$ npx claude-code orchestrate --parallel 8\r\n"
+  - delay: 400
+    content: "\e[90m[orchestrator]\e[0m spawning 8 agents...\r\n"
+  - delay: 200
+    content: "\e[32m[agent-1:x-poster]\e[0m      ● starting\r\n"
+  - delay: 80
+    content: "\e[34m[agent-2:threads]\e[0m       ● starting\r\n"
+  - delay: 80
+    content: "\e[33m[agent-3:note-rag]\e[0m      ● starting\r\n"
+  - delay: 80
+    content: "\e[35m[agent-4:ig-image]\e[0m      ● starting\r\n"
+  - delay: 80
+    content: "\e[36m[agent-5:tiktok-cap]\e[0m    ● starting\r\n"
+  - delay: 80
+    content: "\e[32m[agent-6:slack-report]\e[0m  ● starting\r\n"
+  - delay: 80
+    content: "\e[35m[agent-7:auto-reply]\e[0m    ● starting\r\n"
+  - delay: 80
+    content: "\e[34m[agent-8:dm-engage]\e[0m     ● starting\r\n"
+  - delay: 400
+    content: "\e[32m[agent-1]\e[0m → analyzing 2,847 trending posts\r\n"
+  - delay: 150
+    content: "\e[34m[agent-2]\e[0m → fetching Threads timeline\r\n"
+  - delay: 200
+    content: "\e[33m[agent-3]\e[0m → retrieving knowledge base (1,242 docs)\r\n"
+  - delay: 100
+    content: "\e[35m[agent-4]\e[0m → calling Gemini Imagen API\r\n"
+  - delay: 150
+    content: "\e[36m[agent-5]\e[0m → transcribing video.mp4 (Whisper)\r\n"
+  - delay: 200
+    content: "\e[32m[agent-1]\e[0m \e[1;32m✓\e[0m generated post (487ms)\r\n"
+  - delay: 80
+    content: "\e[34m[agent-2]\e[0m → calling Claude Opus 4.7\r\n"
+  - delay: 150
+    content: "\e[33m[agent-3]\e[0m → top-5 sources retrieved (cosine 0.87)\r\n"
+  - delay: 100
+    content: "\e[35m[agent-4]\e[0m \e[1;32m✓\e[0m image_8f2x.png saved\r\n"
+  - delay: 80
+    content: "\e[36m[agent-5]\e[0m → segmenting 12 caption blocks\r\n"
+  - delay: 150
+    content: "\e[32m[agent-1]\e[0m \e[1;32m✓ posted\e[0m → https://x.com/.../1789\r\n"
+  - delay: 100
+    content: "\e[32m[agent-6]\e[0m → aggregating yesterday's metrics\r\n"
+  - delay: 200
+    content: "\e[34m[agent-2]\e[0m \e[1;32m✓\e[0m drafted 3 variants\r\n"
+  - delay: 100
+    content: "\e[35m[agent-7]\e[0m → scanning 38 new comments\r\n"
+  - delay: 150
+    content: "\e[33m[agent-3]\e[0m → writing 2,400-char article\r\n"
+  - delay: 200
+    content: "\e[34m[agent-8]\e[0m → segmenting 412 followers\r\n"
+  - delay: 100
+    content: "\e[36m[agent-5]\e[0m \e[1;32m✓\e[0m subtitles.srt generated\r\n"
+  - delay: 150
+    content: "\e[34m[agent-2]\e[0m \e[1;32m✓ posted\e[0m to Threads (3 posts)\r\n"
+  - delay: 100
+    content: "\e[32m[agent-6]\e[0m \e[1;32m✓\e[0m report sent to #growth\r\n"
+  - delay: 150
+    content: "\e[35m[agent-7]\e[0m \e[1;32m✓\e[0m 38 replies drafted, 14 sent\r\n"
+  - delay: 200
+    content: "\e[33m[agent-3]\e[0m \e[1;32m✓ note published\e[0m → 2,431字\r\n"
+  - delay: 150
+    content: "\e[34m[agent-8]\e[0m \e[1;32m✓\e[0m sent 47 personalized DMs\r\n"
+  - delay: 400
+    content: "\r\n\e[1;32m━━━ ALL 8 AGENTS COMPLETED ━━━\e[0m\r\n"
+  - delay: 200
+    content: "\e[1m  Total runtime:\e[0m   12.4s\r\n"
+  - delay: 80
+    content: "\e[1m  Posts created:\e[0m   8\r\n"
+  - delay: 80
+    content: "\e[1m  Replies sent:\e[0m    14\r\n"
+  - delay: 80
+    content: "\e[1m  DMs sent:\e[0m        47\r\n"
+  - delay: 80
+    content: "\e[1m  Tokens used:\e[0m     38,294\r\n"
+  - delay: 80
+    content: "\e[1m  Cost:\e[0m            $0.47\r\n"
+  - delay: 200
+    content: "\e[1;36m  Your time:\e[0m       \e[1;32m0 minutes\e[0m ☕\r\n"
+  - delay: 1000
+    content: "\r\n$ "
+  - delay: 1500
+    content: ""

@@ -1,0 +1,13 @@
+{
+  "name": "x-bait-terminalizer",
+  "version": "1.0.0",
+  "description": "Terminal recording scripts for X bait videos",
+  "scripts": {
+    "record:fake-agent": "terminalizer render fake-agent.yml -o ../out/fake-agent.gif",
+    "play:fake-agent": "terminalizer play fake-agent.yml",
+    "render:all": "node render-all.mjs"
+  },
+  "dependencies": {
+    "terminalizer": "0.12.0"
+  }
+}
