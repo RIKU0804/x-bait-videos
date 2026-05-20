@@ -99,7 +99,7 @@ export const InspectorPanel: React.FC<{
             </div>
             <div>
               <div style={{ color: "#fff", fontSize: 13, fontWeight: 700, lineHeight: 1.1 }}>
-                Claude Opus 4.7
+                Claude Opus 4.5
               </div>
               <div
                 style={{

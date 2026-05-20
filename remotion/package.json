@@ -3,9 +3,21 @@
   "version": "1.0.0",
   "description": "X bait videos generated with Remotion",
   "scripts": {
-    "dev": "remotion studio",
+    "dev": "remotion studio --port=3001",
     "build": "remotion render",
     "build:workflow": "remotion render WorkflowCanvasBait out/workflow.mp4",
+    "build:ide": "remotion render IDEAutoBuildBait out/ide.mp4",
+    "build:slack": "remotion render SlackChatBait out/slack.mp4",
+    "build:revenue": "remotion render RevenueDashboardBait out/revenue.mp4",
+    "build:x": "remotion render XMultiAccountBait out/x-multi.mp4",
+    "build:agents": "remotion render AgentMonitorBait out/agent-monitor.mp4",
+    "build:factory": "remotion render ContentFactoryBait out/content-factory.mp4",
+    "build:persona": "remotion render PersonaForgeBait out/persona-forge.mp4",
+    "build:farm": "remotion render AccountFarmBait out/account-farm.mp4",
+    "build:banshield": "remotion render BanShieldBait out/ban-shield.mp4",
+    "build:revstack": "remotion render RevenueStackBait out/rev-stack.mp4",
+    "build:dmcloser": "remotion render DMCloserBait out/dm-closer.mp4",
+    "build:imageforge": "remotion render ImageFactoryBait out/image-forge.mp4",
     "upgrade": "remotion upgrade"
   },
   "dependencies": {

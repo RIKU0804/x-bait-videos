@@ -1,5 +1,5 @@
 # 並列エージェントが同時に動いてる感を出すターミナル動画
-# 複数のログ行が高速で流れるパターン (バズ狙い)
+# Cloud Run / Vercel Functions のログっぽい無機質さを狙う
 
 config:
   command: null
@@ -14,107 +14,150 @@ config:
   maxIdleTime: 2000
   frameBox:
     type: floating
-    title: 'Claude Code — 8 agents running in parallel'
+    title: 'social-orchestrator — claude-code'
     style:
       border: '0px black solid'
-      backgroundColor: '#0a0a0a'
+      backgroundColor: '#0d1117'
       margin: '0px'
   cursorStyle: block
-  fontFamily: 'Cascadia Mono, Consolas, monospace'
+  fontFamily: 'Cascadia Mono, JetBrains Mono, Consolas, monospace'
   fontSize: 13
   lineHeight: 1.35
   theme:
-    background: '#0a0a0a'
-    foreground: '#e0e0e0'
-    cursor: '#a78bfa'
-    green: '#4ade80'
-    yellow: '#fbbf24'
-    blue: '#60a5fa'
-    magenta: '#f472b6'
-    cyan: '#22d3ee'
+    background: '#0d1117'
+    foreground: '#c9d1d9'
+    cursor: '#c9d1d9'
+    black: '#484f58'
+    red: '#ff7b72'
+    green: '#56d364'
+    yellow: '#e3b341'
+    blue: '#58a6ff'
+    magenta: '#bc8cff'
+    cyan: '#39c5cf'
+    white: '#b1bac4'
+    brightBlack: '#6e7681'
+    brightGreen: '#7ee787'
+    brightBlue: '#79c0ff'
 
 records:
   - delay: 0
-    content: "$ npx claude-code orchestrate --parallel 8\r\n"
-  - delay: 400
-    content: "\e[90m[orchestrator]\e[0m spawning 8 agents...\r\n"
+    content: "$ pnpm orchestrate --parallel 8\r\n"
+
+  - delay: 350
+    content: "\r\n"
+  - delay: 80
+    content: "> social-orchestrator@0.6.1 orchestrate\r\n"
+  - delay: 60
+    content: "> tsx src/orchestrator.ts --parallel 8\r\n\r\n"
+
+  - delay: 250
+    content: "\e[38;5;245m22:14:08.412\e[0m \e[38;5;114minfo\e[0m  orchestrator starting        \e[38;5;245mparallel=8\e[0m\r\n"
   - delay: 200
-    content: "\e[32m[agent-1:x-poster]\e[0m      ● starting\r\n"
+    content: "\e[38;5;245m22:14:08.580\e[0m \e[38;5;114minfo\e[0m  spawned 8 workers            \e[38;5;245mpid=[48211..48218]\e[0m\r\n"
+
+  - delay: 350
+    content: "\e[38;5;245m22:14:08.802\e[0m \e[38;5;245magent-1\e[0m  \e[38;5;114minfo\e[0m  x-poster started\r\n"
+  - delay: 50
+    content: "\e[38;5;245m22:14:08.811\e[0m \e[38;5;245magent-2\e[0m  \e[38;5;114minfo\e[0m  threads-poster started\r\n"
+  - delay: 50
+    content: "\e[38;5;245m22:14:08.819\e[0m \e[38;5;245magent-3\e[0m  \e[38;5;114minfo\e[0m  note-rag started\r\n"
+  - delay: 50
+    content: "\e[38;5;245m22:14:08.827\e[0m \e[38;5;245magent-4\e[0m  \e[38;5;114minfo\e[0m  ig-image started\r\n"
+  - delay: 50
+    content: "\e[38;5;245m22:14:08.834\e[0m \e[38;5;245magent-5\e[0m  \e[38;5;114minfo\e[0m  tiktok-caption started\r\n"
+  - delay: 50
+    content: "\e[38;5;245m22:14:08.841\e[0m \e[38;5;245magent-6\e[0m  \e[38;5;114minfo\e[0m  slack-reporter started\r\n"
+  - delay: 50
+    content: "\e[38;5;245m22:14:08.848\e[0m \e[38;5;245magent-7\e[0m  \e[38;5;114minfo\e[0m  auto-reply started\r\n"
+  - delay: 50
+    content: "\e[38;5;245m22:14:08.855\e[0m \e[38;5;245magent-8\e[0m  \e[38;5;114minfo\e[0m  dm-engage started\r\n"
+
+  - delay: 280
+    content: "\e[38;5;245m22:14:09.124\e[0m \e[38;5;245magent-1\e[0m  \e[38;5;114minfo\e[0m  analyzing trending posts     \e[38;5;245mn=2847\e[0m\r\n"
   - delay: 80
-    content: "\e[34m[agent-2:threads]\e[0m       ● starting\r\n"
-  - delay: 80
-    content: "\e[33m[agent-3:note-rag]\e[0m      ● starting\r\n"
-  - delay: 80
-    content: "\e[35m[agent-4:ig-image]\e[0m      ● starting\r\n"
-  - delay: 80
-    content: "\e[36m[agent-5:tiktok-cap]\e[0m    ● starting\r\n"
-  - delay: 80
-    content: "\e[32m[agent-6:slack-report]\e[0m  ● starting\r\n"
-  - delay: 80
-    content: "\e[35m[agent-7:auto-reply]\e[0m    ● starting\r\n"
-  - delay: 80
-    content: "\e[34m[agent-8:dm-engage]\e[0m     ● starting\r\n"
-  - delay: 400
-    content: "\e[32m[agent-1]\e[0m → analyzing 2,847 trending posts\r\n"
-  - delay: 150
-    content: "\e[34m[agent-2]\e[0m → fetching Threads timeline\r\n"
-  - delay: 200
-    content: "\e[33m[agent-3]\e[0m → retrieving knowledge base (1,242 docs)\r\n"
+    content: "\e[38;5;245m22:14:09.198\e[0m \e[38;5;245magent-2\e[0m  \e[38;5;114minfo\e[0m  fetching threads timeline\r\n"
   - delay: 100
-    content: "\e[35m[agent-4]\e[0m → calling Gemini Imagen API\r\n"
-  - delay: 150
-    content: "\e[36m[agent-5]\e[0m → transcribing video.mp4 (Whisper)\r\n"
-  - delay: 200
-    content: "\e[32m[agent-1]\e[0m \e[1;32m✓\e[0m generated post (487ms)\r\n"
+    content: "\e[38;5;245m22:14:09.312\e[0m \e[38;5;245magent-3\e[0m  \e[38;5;114minfo\e[0m  embedding query              \e[38;5;245mdims=1536\e[0m\r\n"
+  - delay: 90
+    content: "\e[38;5;245m22:14:09.408\e[0m \e[38;5;245magent-4\e[0m  \e[38;5;114minfo\e[0m  POST /v1/images:generate\r\n"
   - delay: 80
-    content: "\e[34m[agent-2]\e[0m → calling Claude Opus 4.7\r\n"
-  - delay: 150
-    content: "\e[33m[agent-3]\e[0m → top-5 sources retrieved (cosine 0.87)\r\n"
+    content: "\e[38;5;245m22:14:09.491\e[0m \e[38;5;245magent-5\e[0m  \e[38;5;114minfo\e[0m  loading whisper-large-v3\r\n"
   - delay: 100
-    content: "\e[35m[agent-4]\e[0m \e[1;32m✓\e[0m image_8f2x.png saved\r\n"
+    content: "\e[38;5;245m22:14:09.602\e[0m \e[38;5;245magent-3\e[0m  \e[38;5;114minfo\e[0m  pgvector match               \e[38;5;245mk=5 cosine=0.87\e[0m\r\n"
   - delay: 80
-    content: "\e[36m[agent-5]\e[0m → segmenting 12 caption blocks\r\n"
-  - delay: 150
-    content: "\e[32m[agent-1]\e[0m \e[1;32m✓ posted\e[0m → https://x.com/.../1789\r\n"
+    content: "\e[38;5;245m22:14:09.687\e[0m \e[38;5;245magent-7\e[0m  \e[38;5;114minfo\e[0m  scanning unreplied mentions  \e[38;5;245mn=38\e[0m\r\n"
+  - delay: 90
+    content: "\e[38;5;245m22:14:09.778\e[0m \e[38;5;245magent-1\e[0m  \e[38;5;114minfo\e[0m  drafting with claude         \e[38;5;245mmodel=claude-opus-4-5\e[0m\r\n"
+
+  - delay: 200
+    content: "\e[38;5;245m22:14:10.012\e[0m \e[38;5;245magent-4\e[0m  \e[38;5;114minfo\e[0m  POST /v1/images:generate    \e[38;5;114m200\e[0m \e[38;5;245m612ms\e[0m\r\n"
+  - delay: 80
+    content: "\e[38;5;245m22:14:10.098\e[0m \e[38;5;245magent-4\e[0m  \e[38;5;114minfo\e[0m  saved                        \e[38;5;245mout/ig_8f2x.png 1024x1024\e[0m\r\n"
   - delay: 100
-    content: "\e[32m[agent-6]\e[0m → aggregating yesterday's metrics\r\n"
-  - delay: 200
-    content: "\e[34m[agent-2]\e[0m \e[1;32m✓\e[0m drafted 3 variants\r\n"
+    content: "\e[38;5;245m22:14:10.211\e[0m \e[38;5;245magent-8\e[0m  \e[38;5;114minfo\e[0m  segmenting audience          \e[38;5;245mfollowers=412\e[0m\r\n"
+
+  # rate limit warning を1個入れる (リアリティ)
+  - delay: 150
+    content: "\e[38;5;245m22:14:10.378\e[0m \e[38;5;245magent-7\e[0m  \e[38;5;221mwarn\e[0m  rate limit approaching       \e[38;5;245mused=47/50 reset=in 12m\e[0m\r\n"
   - delay: 100
-    content: "\e[35m[agent-7]\e[0m → scanning 38 new comments\r\n"
-  - delay: 150
-    content: "\e[33m[agent-3]\e[0m → writing 2,400-char article\r\n"
+    content: "\e[38;5;245m22:14:10.482\e[0m \e[38;5;245magent-7\e[0m  \e[38;5;114minfo\e[0m  backing off                  \e[38;5;245mdelay=800ms\e[0m\r\n"
+
   - delay: 200
-    content: "\e[34m[agent-8]\e[0m → segmenting 412 followers\r\n"
+    content: "\e[38;5;245m22:14:10.701\e[0m \e[38;5;245magent-1\e[0m  \e[38;5;114minfo\e[0m  draft ready                  \e[38;5;245mchars=87 tokens=142\e[0m\r\n"
+  - delay: 80
+    content: "\e[38;5;245m22:14:10.788\e[0m \e[38;5;245magent-1\e[0m  \e[38;5;114minfo\e[0m  POST /2/tweets              \e[38;5;114m201\e[0m \e[38;5;245m428ms\e[0m\r\n"
+  - delay: 60
+    content: "\e[38;5;245m22:14:10.851\e[0m \e[38;5;245magent-1\e[0m  \e[38;5;114minfo\e[0m  published                    \e[38;5;245mtweet_id=1789247318472\e[0m\r\n"
+
   - delay: 100
-    content: "\e[36m[agent-5]\e[0m \e[1;32m✓\e[0m subtitles.srt generated\r\n"
-  - delay: 150
-    content: "\e[34m[agent-2]\e[0m \e[1;32m✓ posted\e[0m to Threads (3 posts)\r\n"
+    content: "\e[38;5;245m22:14:10.962\e[0m \e[38;5;245magent-5\e[0m  \e[38;5;114minfo\e[0m  whisper done                 \e[38;5;245mduration=84s segments=12\e[0m\r\n"
+  - delay: 80
+    content: "\e[38;5;245m22:14:11.041\e[0m \e[38;5;245magent-5\e[0m  \e[38;5;114minfo\e[0m  wrote out/captions.srt\r\n"
   - delay: 100
-    content: "\e[32m[agent-6]\e[0m \e[1;32m✓\e[0m report sent to #growth\r\n"
+    content: "\e[38;5;245m22:14:11.142\e[0m \e[38;5;245magent-2\e[0m  \e[38;5;114minfo\e[0m  POST /v1/posts              \e[38;5;114m201\e[0m \e[38;5;245m612ms id=t_pZx9Aq\e[0m\r\n"
+  - delay: 80
+    content: "\e[38;5;245m22:14:11.224\e[0m \e[38;5;245magent-2\e[0m  \e[38;5;114minfo\e[0m  POST /v1/posts              \e[38;5;114m201\e[0m \e[38;5;245m587ms id=t_pZx9Ar\e[0m\r\n"
+  - delay: 80
+    content: "\e[38;5;245m22:14:11.302\e[0m \e[38;5;245magent-2\e[0m  \e[38;5;114minfo\e[0m  POST /v1/posts              \e[38;5;114m201\e[0m \e[38;5;245m604ms id=t_pZx9As\e[0m\r\n"
+
   - delay: 150
-    content: "\e[35m[agent-7]\e[0m \e[1;32m✓\e[0m 38 replies drafted, 14 sent\r\n"
+    content: "\e[38;5;245m22:14:11.471\e[0m \e[38;5;245magent-6\e[0m  \e[38;5;114minfo\e[0m  aggregating metrics          \e[38;5;245mwindow=24h\e[0m\r\n"
+  - delay: 120
+    content: "\e[38;5;245m22:14:11.598\e[0m \e[38;5;245magent-7\e[0m  \e[38;5;114minfo\e[0m  drafted 38 replies\r\n"
+  - delay: 100
+    content: "\e[38;5;245m22:14:11.704\e[0m \e[38;5;245magent-7\e[0m  \e[38;5;114minfo\e[0m  sent 14 / 38                 \e[38;5;245mskipped=24 (low confidence)\e[0m\r\n"
+  - delay: 180
+    content: "\e[38;5;245m22:14:11.901\e[0m \e[38;5;245magent-3\e[0m  \e[38;5;114minfo\e[0m  POST /api/v3/notes          \e[38;5;114m201\e[0m \e[38;5;245m2.41s id=n8f2x\e[0m\r\n"
+  - delay: 80
+    content: "\e[38;5;245m22:14:11.987\e[0m \e[38;5;245magent-3\e[0m  \e[38;5;114minfo\e[0m  note published               \e[38;5;245mchars=2431\e[0m\r\n"
+  - delay: 100
+    content: "\e[38;5;245m22:14:12.094\e[0m \e[38;5;245magent-6\e[0m  \e[38;5;114minfo\e[0m  posted to slack             \e[38;5;245m#growth ts=1747...\e[0m\r\n"
+  - delay: 140
+    content: "\e[38;5;245m22:14:12.241\e[0m \e[38;5;245magent-8\e[0m  \e[38;5;114minfo\e[0m  sent 47 personalized DMs    \e[38;5;245mavg_latency=312ms\e[0m\r\n"
+
+  - delay: 350
+    content: "\r\n"
+  - delay: 80
+    content: "\e[38;5;245m22:14:12.612\e[0m \e[38;5;114minfo\e[0m  all workers finished\r\n"
   - delay: 200
-    content: "\e[33m[agent-3]\e[0m \e[1;32m✓ note published\e[0m → 2,431字\r\n"
-  - delay: 150
-    content: "\e[34m[agent-8]\e[0m \e[1;32m✓\e[0m sent 47 personalized DMs\r\n"
-  - delay: 400
-    content: "\r\n\e[1;32m━━━ ALL 8 AGENTS COMPLETED ━━━\e[0m\r\n"
-  - delay: 200
-    content: "\e[1m  Total runtime:\e[0m   12.4s\r\n"
+    content: "\r\n"
+  - delay: 50
+    content: "  \e[38;5;245m✓\e[0m \e[38;5;114m8 / 8\e[0m workers ok           \e[38;5;245m12.4s\e[0m\r\n"
   - delay: 80
-    content: "\e[1m  Posts created:\e[0m   8\r\n"
+    content: "  \e[38;5;245m✓\e[0m \e[38;5;114m8\e[0m posts published        \e[38;5;245m(x:1 threads:3 note:1 ig:1 tiktok:1 slack:1)\e[0m\r\n"
+  - delay: 60
+    content: "  \e[38;5;245m✓\e[0m \e[38;5;114m14\e[0m replies               \e[38;5;245m(out of 38 drafts)\e[0m\r\n"
+  - delay: 60
+    content: "  \e[38;5;245m✓\e[0m \e[38;5;114m47\e[0m DMs                   \e[38;5;245mavg=312ms\e[0m\r\n"
   - delay: 80
-    content: "\e[1m  Replies sent:\e[0m    14\r\n"
-  - delay: 80
-    content: "\e[1m  DMs sent:\e[0m        47\r\n"
-  - delay: 80
-    content: "\e[1m  Tokens used:\e[0m     38,294\r\n"
-  - delay: 80
-    content: "\e[1m  Cost:\e[0m            $0.47\r\n"
-  - delay: 200
-    content: "\e[1;36m  Your time:\e[0m       \e[1;32m0 minutes\e[0m ☕\r\n"
-  - delay: 1000
+    content: "\r\n"
+  - delay: 50
+    content: "  tokens   \e[38;5;114m38,294\e[0m\r\n"
+  - delay: 50
+    content: "  cost     \e[38;5;114m$0.47\e[0m\r\n"
+  - delay: 50
+    content: "  runtime  \e[38;5;114m12.4s\e[0m\r\n"
+  - delay: 800
     content: "\r\n$ "
   - delay: 1500
     content: ""

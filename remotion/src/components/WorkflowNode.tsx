@@ -27,6 +27,7 @@ export type NodeIcon =
   | "filter"
   | "translate";
 
+// 実SaaSのブランドカラーに寄せる
 const ICON_CONFIG: Record<NodeIcon, { bg: string; symbol: string }> = {
   schedule:  { bg: "#ff6d5a", symbol: "⏱" },
   http:      { bg: "#3b82f6", symbol: "↯" },
@@ -34,8 +35,8 @@ const ICON_CONFIG: Record<NodeIcon, { bg: string; symbol: string }> = {
   openai:    { bg: "#10a37f", symbol: "✺" },
   gemini:    { bg: "linear-gradient(135deg, #4285f4, #9b72cb, #d96570)", symbol: "✧" },
   vector:    { bg: "#7c3aed", symbol: "⊞" },
-  x:         { bg: "#000", symbol: "𝕏" },
-  threads:   { bg: "#000", symbol: "@" },
+  x:         { bg: "#000",    symbol: "𝕏" },
+  threads:   { bg: "#000",    symbol: "@" },
   instagram: { bg: "linear-gradient(135deg, #f58529, #dd2a7b, #8134af)", symbol: "◉" },
   note:      { bg: "#41c9b4", symbol: "n" },
   tiktok:    { bg: "linear-gradient(135deg, #25f4ee, #fe2c55)", symbol: "♪" },
@@ -56,6 +57,10 @@ const ICON_CONFIG: Record<NodeIcon, { bg: string; symbol: string }> = {
 
 export type NodeStatus = "idle" | "running" | "done" | "error";
 export type PortSide = "top" | "bottom" | "left" | "right";
+
+// 業務SaaS (n8n / Make / Zapier) のノードを参考にした静かなデザイン
+// 実行中は左に細い線が走る + 右上にちっちゃい点滅ドット
+// 完了は緑チェックのみ。グロー・シマー・パルスは入れない
 
 export const WorkflowNode: React.FC<{
   x: number;
@@ -87,11 +92,7 @@ export const WorkflowNode: React.FC<{
   const frame = useCurrentFrame();
   const cfg = ICON_CONFIG[icon];
 
-  const appearOp = interpolate(frame - appearFrame, [0, 12], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const appearScale = interpolate(frame - appearFrame, [0, 12], [0.85, 1], {
+  const appearOp = interpolate(frame - appearFrame, [0, 8], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -100,16 +101,8 @@ export const WorkflowNode: React.FC<{
     activeFrame >= 0 && frame >= activeFrame && frame < activeFrame + activeDuration;
   const isDone = activeFrame >= 0 && frame >= activeFrame + activeDuration;
 
-  const glowIntensity = isActive
-    ? interpolate(frame - activeFrame, [0, 6, activeDuration], [0, 1, 0.4], {
-        extrapolateRight: "clamp",
-      })
-    : isDone
-    ? 0.15
-    : 0;
-
   const borderColor = isActive
-    ? "#ff6d5a"
+    ? "#3b82f6"
     : isDone
     ? "rgba(74, 222, 128, 0.4)"
     : "rgba(255,255,255,0.08)";
@@ -120,6 +113,18 @@ export const WorkflowNode: React.FC<{
   const titleSize = height >= 90 ? 19 : 16;
   const subtitleSize = height >= 90 ? 13 : 11;
 
+  // 実行中: ノード下部に左→右に流れる細い線 (進捗バー風)
+  const lineProgress = isActive
+    ? interpolate(frame - activeFrame, [0, activeDuration], [0, 1], {
+        extrapolateRight: "clamp",
+      })
+    : isDone
+    ? 1
+    : 0;
+
+  // running時のドット点滅 (1秒で1回くらい)
+  const blink = isActive ? Math.sin(frame * 0.35) > 0 : false;
+
   return (
     <div
       style={{
@@ -129,49 +134,44 @@ export const WorkflowNode: React.FC<{
         width,
         height,
         opacity: appearOp,
-        transform: `scale(${appearScale})`,
-        transformOrigin: "center",
       }}
     >
-      {glowIntensity > 0 && (
-        <div
-          style={{
-            position: "absolute",
-            inset: -16,
-            background: `radial-gradient(ellipse at center, ${
-              isActive
-                ? "rgba(255, 109, 90, " + glowIntensity * 0.5 + ")"
-                : "rgba(74, 222, 128, 0.1)"
-            } 0%, transparent 60%)`,
-            filter: "blur(8px)",
-            pointerEvents: "none",
-          }}
-        />
-      )}
-
       <div
         style={{
           position: "relative",
           width: "100%",
           height: "100%",
-          background: "rgba(20, 20, 28, 0.94)",
-          backdropFilter: "blur(16px)",
-          border: `1.5px solid ${borderColor}`,
-          borderRadius: 12,
+          background: "#161922",
+          border: `1px solid ${borderColor}`,
+          borderRadius: 8,
           display: "flex",
           alignItems: "center",
           padding: 12,
           gap: 12,
-          boxShadow: isActive
-            ? `0 0 28px rgba(255, 109, 90, ${glowIntensity * 0.6}), inset 0 1px 0 rgba(255,255,255,0.06)`
-            : "0 4px 14px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)",
+          overflow: "hidden",
+          boxShadow: "0 1px 0 rgba(255,255,255,0.03), 0 2px 8px rgba(0,0,0,0.4)",
         }}
       >
+        {/* 進捗ライン (下部、active/done時のみ) */}
+        {(isActive || isDone) && (
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              bottom: 0,
+              height: 2,
+              width: `${lineProgress * 100}%`,
+              background: isDone ? "#22c55e" : "#3b82f6",
+            }}
+          />
+        )}
+
+        {/* アイコン */}
         <div
           style={{
             width: iconSize,
             height: iconSize,
-            borderRadius: 10,
+            borderRadius: 6,
             background: cfg.bg,
             display: "flex",
             alignItems: "center",
@@ -180,7 +180,6 @@ export const WorkflowNode: React.FC<{
             color: "#fff",
             fontWeight: 700,
             flexShrink: 0,
-            boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)",
           }}
         >
           {cfg.symbol}
@@ -189,11 +188,12 @@ export const WorkflowNode: React.FC<{
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
-              color: "#fff",
+              color: "#e5e7eb",
               fontSize: titleSize,
-              fontWeight: 700,
-              fontFamily: "system-ui",
-              letterSpacing: -0.2,
+              fontWeight: 600,
+              fontFamily:
+                "'Segoe UI', 'Yu Gothic UI', Roboto, system-ui, sans-serif",
+              letterSpacing: -0.1,
               lineHeight: 1.2,
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -205,10 +205,11 @@ export const WorkflowNode: React.FC<{
           {subtitle && (
             <div
               style={{
-                color: "#94a3b8",
+                color: "#6b7280",
                 fontSize: subtitleSize,
                 marginTop: 3,
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily:
+                  "'JetBrains Mono', 'Cascadia Mono', Consolas, monospace",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
@@ -220,18 +221,18 @@ export const WorkflowNode: React.FC<{
           )}
         </div>
 
-        {/* ステータス: 絶対配置でテキスト領域を圧迫しない */}
+        {/* 右上ステータス */}
         {isActive && (
           <div
             style={{
               position: "absolute",
               top: 10,
               right: 10,
-              width: 9,
-              height: 9,
+              width: 7,
+              height: 7,
               borderRadius: "50%",
-              background: "#ff6d5a",
-              boxShadow: "0 0 8px #ff6d5a",
+              background: "#3b82f6",
+              opacity: blink ? 1 : 0.3,
             }}
           />
         )}
@@ -239,10 +240,10 @@ export const WorkflowNode: React.FC<{
           <div
             style={{
               position: "absolute",
-              top: 6,
-              right: 8,
-              color: "#4ade80",
-              fontSize: 18,
+              top: 8,
+              right: 10,
+              color: "#22c55e",
+              fontSize: 14,
               fontWeight: 700,
               lineHeight: 1,
             }}
@@ -255,21 +256,21 @@ export const WorkflowNode: React.FC<{
           <div
             style={{
               position: "absolute",
-              top: -8,
-              right: -8,
-              minWidth: 28,
-              height: 28,
-              borderRadius: 14,
-              background: "#4ade80",
+              top: -6,
+              right: -6,
+              minWidth: 22,
+              height: 22,
+              borderRadius: 11,
+              background: "#22c55e",
               color: "#0a0a0f",
-              fontSize: 13,
-              fontWeight: 800,
+              fontSize: 11,
+              fontWeight: 700,
               fontFamily: "system-ui",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              padding: "0 8px",
-              border: "2px solid #0a0a0f",
+              padding: "0 6px",
+              border: "2px solid #0b0d12",
             }}
           >
             {executionCount}
@@ -283,25 +284,25 @@ export const WorkflowNode: React.FC<{
           <div
             style={{
               position: "absolute",
-              left: -5,
-              top: height / 2 - 5,
-              width: 10,
-              height: 10,
+              left: -4,
+              top: height / 2 - 4,
+              width: 8,
+              height: 8,
               borderRadius: "50%",
-              background: "#1a1a24",
-              border: "2px solid rgba(255,255,255,0.2)",
+              background: "#161922",
+              border: "1.5px solid rgba(255,255,255,0.2)",
             }}
           />
           <div
             style={{
               position: "absolute",
-              right: -5,
-              top: height / 2 - 5,
-              width: 10,
-              height: 10,
+              right: -4,
+              top: height / 2 - 4,
+              width: 8,
+              height: 8,
               borderRadius: "50%",
-              background: "#1a1a24",
-              border: "2px solid rgba(255,255,255,0.2)",
+              background: "#161922",
+              border: "1.5px solid rgba(255,255,255,0.2)",
             }}
           />
         </>
@@ -310,25 +311,25 @@ export const WorkflowNode: React.FC<{
           <div
             style={{
               position: "absolute",
-              left: width / 2 - 5,
-              top: -5,
-              width: 10,
-              height: 10,
+              left: width / 2 - 4,
+              top: -4,
+              width: 8,
+              height: 8,
               borderRadius: "50%",
-              background: "#1a1a24",
-              border: "2px solid rgba(255,255,255,0.2)",
+              background: "#161922",
+              border: "1.5px solid rgba(255,255,255,0.2)",
             }}
           />
           <div
             style={{
               position: "absolute",
-              left: width / 2 - 5,
-              bottom: -5,
-              width: 10,
-              height: 10,
+              left: width / 2 - 4,
+              bottom: -4,
+              width: 8,
+              height: 8,
               borderRadius: "50%",
-              background: "#1a1a24",
-              border: "2px solid rgba(255,255,255,0.2)",
+              background: "#161922",
+              border: "1.5px solid rgba(255,255,255,0.2)",
             }}
           />
         </>

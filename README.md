@@ -9,16 +9,18 @@ x-bait-videos/
 └── recording-guide/   # 実SaaS画面の録画ガイド + DevTools演出スニペット
 ```
 
+> **設計方針:** 派手にしすぎない。実際のSaaS / CIログ / Linearトーストに寄せた静かな見た目のほうが「これマジで動いてる…」と見る人を騙せる。キラキラエフェクトは作り物っぽくなるので入れない。
+
 ---
 
 ## どれを使うか
 
 | ニーズ | 使うパターン |
 |---|---|
-| **量産したい / 毎日違う数字を流したい** | Remotion |
-| **エージェント実行ログを格好良く見せたい** | terminalizer |
-| **本物っぽさ最強で釣りたい** | recording-guide (実画面録画) |
-| **迷ったらこれ** | recording-guide → 慣れたらRemotion併用 |
+| 量産したい / 毎日違う数字を流したい | Remotion |
+| エージェント実行ログを格好良く見せたい | terminalizer |
+| 本物っぽさ最強で釣りたい | recording-guide (実画面録画) |
+| 迷ったらこれ | recording-guide → 慣れたらRemotion併用 |
 
 釣り効果としては **実画面録画 >>> Remotion ≧ terminalizer** だが、量産効率は逆順。
 
@@ -26,33 +28,30 @@ x-bait-videos/
 
 ## 1. Remotion (プログラマブル動画)
 
-React で動画を書ける。3テンプレ用意済み。
+React で動画を書ける。n8n / Make / Zapier 風のワークフローノードを並べて、実行されてる様子を見せる。背景は意図的にフラット (`#0b0d12` + ドットグリッド) で、本物のSaaS管理画面と区別がつかない。
 
 ```bash
 cd remotion
-npm run dev          # Remotion Studio起動 → http://localhost:3000
-npm run build:terminal    # TerminalBait → out/terminal.mp4
-npm run build:dashboard   # DashboardBait → out/dashboard.mp4
-npm run build:agents      # AgentsBait → out/agents.mp4
+npm install
+npm run dev                  # Remotion Studio → http://localhost:3000
+npm run build:workflow       # WorkflowCanvasBait → out/workflow.mp4
 ```
-
-### テンプレ一覧
-
-| 名前 | 内容 | 長さ |
-|---|---|---|
-| `TerminalBait` | 自動エージェントの実行ログ風 | 15秒 |
-| `DashboardBait` | 「寝てる間に全部終わってた」+ 数字カウントアップ | 12秒 |
-| `AgentsBait` | 8エージェントが並列で走る進捗バー | 18秒 |
 
 ### カスタマイズ
 
-`remotion/src/compositions/*.tsx` の配列やテキストを編集すればOK。例えば `DashboardBait.tsx` の数字を変えればその日の数字に差し替えできる。
+- `remotion/src/compositions/WorkflowCanvasBait.tsx` — ノードの配置・実行順を編集
+- `remotion/src/components/WorkflowNode.tsx` — ノードの見た目 (現状: n8n 風のフラットカード)
+- `remotion/src/components/CinematicBackground.tsx` — 背景 (現状: ドットグリッド + 微弱グラデのみ)
+
+### ノードに使えるアイコン
+
+`schedule / http / claude / openai / gemini / vector / x / threads / instagram / note / tiktok / linkedin / youtube / slack / discord / supabase / redis / analytics / code / merge / split / webhook / filter / translate`
 
 ---
 
 ## 2. terminalizer (ターミナル動画)
 
-YAMLを書き換えるだけでターミナル風のGIF/MP4が作れる。録画不要。
+YAMLを書き換えるだけでターミナル風のGIF/MP4が作れる。録画不要。GitHub Actions / Cloud Run のログのような無機質な見た目に寄せている (タイムスタンプ・ログレベル・構造化フィールド・rate limit warning入り)。
 
 ### 初回セットアップ
 
@@ -75,10 +74,10 @@ terminalizer render multi-agent.yml -o ../out/multi-agent.gif
 
 | ファイル | 内容 |
 |---|---|
-| `fake-agent.yml` | 単体エージェントが投稿生成→公開→次の予約 |
-| `multi-agent.yml` | 8エージェントが並列で同時実行 |
+| `fake-agent.yml` | 単体エージェント: trending → claude生成 → X投稿 → 次の予約 |
+| `multi-agent.yml` | 8エージェント並列、rate limit warning入りで本物っぽさUP |
 
-新しい動画を作るときは `records` 配列をコピペして編集するだけ。
+新しい動画を作るときは `records` 配列をコピペして編集するだけ。「派手な進捗バーや絵文字を入れない」ことが本物っぽさのコツ。
 
 ---
 
@@ -99,12 +98,13 @@ terminalizer render multi-agent.yml -o ../out/multi-agent.gif
 
 ### 演出スニペット
 
-`recording-guide/fake-numbers.js` に以下が入ってる：
+`recording-guide/fake-numbers.js` の関数:
 
 - `setStat(selector, value)` — 数字を一発書き換え
-- `countUp(selector, from, to, ms)` — カウントアップアニメ
-- `showFakeToast(msg)` — 「✓ 投稿完了」トースト
-- `fakeBurst()` — 連続トースト (一気に複数完了演出)
+- `countUp(selector, from, to, ms)` — カウントアップアニメ (easeOutCubic)
+- `showFakeToast(msg, duration, { sub })` — Linear風の地味なトースト + サブ行に `tweet_id=...` など本物っぽいID
+- `fakeBurst()` — 連続トースト (一気に複数完了演出、各SaaS別のメッセージ入り)
+- `progressOn(selector, ratio)` — 任意要素の下に細い進捗バーを差し込む
 
 ---
 
@@ -142,8 +142,6 @@ X、Threads、note、Instagram、TikTok
 
 ## 量産パイプライン
 
-理想形：
-
 ```
 週1で 5-10本の素材撮影/生成
     ↓
@@ -164,3 +162,4 @@ CapCutで縦切り抜き × 各4本
 - **本物のAPIキー・トークン・メアドが画面に出てないか** 投稿前に必ず確認
 - **倍速にしすぎるとログが読めなくなる** → 1.5-2倍が映え + 視認性のバランス◎
 - **音量はBGM控えめ、効果音メイン** が映え動画の定石
+- **派手な演出は逆効果** → グロー・キラキラ・大量の絵文字は素人ほど「作り物」と気づく。本物のCI/SaaSログの無機質さを真似たほうが釣れる

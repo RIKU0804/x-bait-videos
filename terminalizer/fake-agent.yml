@@ -1,9 +1,6 @@
 # Terminalizer recording config - 自動エージェント実行風の偽ターミナル動画
 # 使い方:
 #   npx terminalizer render fake-agent.yml -o fake-agent.gif
-#
-# YAMLの "records" 配列を編集すれば内容を変えられる。
-# delay は前の行からの経過時間(ms)。content は表示する文字列。
 
 config:
   command: null
@@ -11,7 +8,7 @@ config:
   env:
     recording: 'true'
   cols: 100
-  rows: 32
+  rows: 30
   repeat: 0
   quality: 100
   frameDelay: auto
@@ -21,7 +18,7 @@ config:
     title: 'threads-auto-post — claude-code'
     style:
       border: '0px black solid'
-      backgroundColor: '#0a0a0a'
+      backgroundColor: '#0d1117'
       margin: '0px'
   watermark:
     imagePath: null
@@ -32,99 +29,148 @@ config:
       width: 100px
       opacity: 0.9
   cursorStyle: block
-  fontFamily: 'Cascadia Mono, Consolas, Menlo, Monaco, monospace'
+  fontFamily: 'Cascadia Mono, JetBrains Mono, Consolas, Menlo, monospace'
   fontSize: 14
   lineHeight: 1.4
   letterSpacing: 0
   theme:
-    background: '#0a0a0a'
-    foreground: '#e0e0e0'
-    cursor: '#4ade80'
-    black: '#1a1a1a'
-    red: '#ff6b6b'
-    green: '#4ade80'
-    yellow: '#fbbf24'
-    blue: '#60a5fa'
-    magenta: '#f472b6'
-    cyan: '#22d3ee'
-    white: '#fafafa'
-    brightBlack: '#666'
-    brightRed: '#ff8787'
-    brightGreen: '#86efac'
-    brightYellow: '#fde047'
-    brightBlue: '#93c5fd'
-    brightMagenta: '#f9a8d4'
-    brightCyan: '#67e8f9'
-    brightWhite: '#fff'
+    background: '#0d1117'
+    foreground: '#c9d1d9'
+    cursor: '#c9d1d9'
+    black: '#484f58'
+    red: '#ff7b72'
+    green: '#56d364'
+    yellow: '#e3b341'
+    blue: '#58a6ff'
+    magenta: '#bc8cff'
+    cyan: '#39c5cf'
+    white: '#b1bac4'
+    brightBlack: '#6e7681'
+    brightRed: '#ffa198'
+    brightGreen: '#7ee787'
+    brightYellow: '#f2cc60'
+    brightBlue: '#79c0ff'
+    brightMagenta: '#d2a8ff'
+    brightCyan: '#56d4dd'
+    brightWhite: '#f0f6fc'
 
 records:
   - delay: 0
-    content: "\e[1;32m➜\e[0m \e[1;36mthreads-auto-post\e[0m \e[1;33m(main)\e[0m $ "
-  - delay: 500
-    content: "claude-code --agent x-poster"
-  - delay: 800
+    content: "\e[38;5;114mriku0\e[0m@\e[38;5;75mmac\e[0m \e[38;5;245mthreads-auto-post\e[0m \e[38;5;245m(main)\e[0m\r\n"
+  - delay: 100
+    content: "$ "
+  - delay: 600
+    content: "p"
+  - delay: 60
+    content: "n"
+  - delay: 80
+    content: "p"
+  - delay: 60
+    content: "m"
+  - delay: 60
+    content: " "
+  - delay: 50
+    content: "j"
+  - delay: 70
+    content: "o"
+  - delay: 60
+    content: "b"
+  - delay: 60
+    content: "s"
+  - delay: 50
+    content: ":"
+  - delay: 60
+    content: "r"
+  - delay: 50
+    content: "u"
+  - delay: 60
+    content: "n"
+  - delay: 80
+    content: " "
+  - delay: 50
+    content: "x"
+  - delay: 50
+    content: "-"
+  - delay: 50
+    content: "p"
+  - delay: 50
+    content: "o"
+  - delay: 50
+    content: "s"
+  - delay: 50
+    content: "t"
+  - delay: 600
     content: "\r\n"
-  - delay: 200
-    content: "\e[90m→ Loading config from .env.production\e[0m\r\n"
-  - delay: 350
-    content: "\e[32m✓\e[0m Supabase connected\r\n"
-  - delay: 200
-    content: "\e[32m✓\e[0m X API authenticated\r\n"
+
   - delay: 250
-    content: "\e[32m✓\e[0m Claude Opus 4.7 ready\r\n"
+    content: "\r\n> threads-auto-post@0.4.2 jobs:run\r\n"
+  - delay: 60
+    content: "> tsx src/jobs/run.ts x-post\r\n\r\n"
+
   - delay: 400
-    content: "\e[90m→ Fetching trending topics from X analytics...\e[0m\r\n"
+    content: "\e[38;5;245m22:14:08.412\e[0m \e[38;5;114minfo\e[0m  loading config              \e[38;5;245menv=production\e[0m\r\n"
+  - delay: 220
+    content: "\e[38;5;245m22:14:08.598\e[0m \e[38;5;114minfo\e[0m  supabase connected         \e[38;5;245mhost=db.zlxq...supabase.co latency=42ms\e[0m\r\n"
+  - delay: 180
+    content: "\e[38;5;245m22:14:08.741\e[0m \e[38;5;114minfo\e[0m  x oauth verified           \e[38;5;245muser_id=1789247 scope=tweet.write\e[0m\r\n"
+  - delay: 200
+    content: "\e[38;5;245m22:14:08.903\e[0m \e[38;5;114minfo\e[0m  anthropic client ready     \e[38;5;245mmodel=claude-opus-4-5\e[0m\r\n"
+
+  - delay: 350
+    content: "\e[38;5;245m22:14:09.211\e[0m \e[38;5;114minfo\e[0m  fetching trending topics   \e[38;5;245mwindow=24h limit=20\e[0m\r\n"
+  - delay: 450
+    content: "\e[38;5;245m22:14:09.687\e[0m \e[38;5;114minfo\e[0m  retrieved 20 topics        \e[38;5;245mtop=#AI開発 engagement=8247\e[0m\r\n"
+
+  - delay: 200
+    content: "\e[38;5;245m22:14:09.881\e[0m \e[38;5;114minfo\e[0m  selecting post angle       \e[38;5;245mstrategy=lessons_learned\e[0m\r\n"
+  - delay: 300
+    content: "\e[38;5;245m22:14:10.142\e[0m \e[38;5;114minfo\e[0m  drafting with claude       \e[38;5;245mtemperature=0.7 max_tokens=400\e[0m\r\n"
+
+  # Claude のストリーミングっぽく1行ずつ出る
   - delay: 600
-    content: "  \e[33m[1]\e[0m #AI開発         (engagement: 8,247)\r\n"
-  - delay: 80
-    content: "  \e[33m[2]\e[0m #SaaS構築       (engagement: 5,118)\r\n"
-  - delay: 80
-    content: "  \e[33m[3]\e[0m #副業エンジニア (engagement: 12,489)\r\n"
-  - delay: 400
-    content: "\e[90m→ Generating viral post with Claude...\e[0m\r\n"
-  - delay: 800
-    content: "  thinking"
-  - delay: 200
-    content: "."
-  - delay: 200
-    content: "."
-  - delay: 200
-    content: "."
-  - delay: 200
-    content: "."
+    content: "\e[38;5;245m22:14:10.628\e[0m \e[38;5;245mdraft\e[0m AI開発で「コード書く時間」を捨てた話。\r\n"
   - delay: 300
-    content: " \e[32mdone\e[0m (487ms, 142 tokens)\r\n"
-  - delay: 300
-    content: "\e[90m→ Preview:\e[0m\r\n"
+    content: "\e[38;5;245m22:14:10.844\e[0m \e[38;5;245mdraft\e[0m\r\n"
   - delay: 200
-    content: "  \e[37m┌─────────────────────────────────────────────┐\e[0m\r\n"
-  - delay: 100
-    content: "  \e[37m│\e[0m AI開発で「コード書く時間」を捨てた話        \e[37m│\e[0m\r\n"
-  - delay: 100
-    content: "  \e[37m│\e[0m                                             \e[37m│\e[0m\r\n"
-  - delay: 100
-    content: "  \e[37m│\e[0m Claude Codeに全部投げたら、寝てる間に        \e[37m│\e[0m\r\n"
-  - delay: 100
-    content: "  \e[37m│\e[0m SaaSが3つ完成してた。本当に。               \e[37m│\e[0m\r\n"
-  - delay: 100
-    content: "  \e[37m└─────────────────────────────────────────────┘\e[0m\r\n"
+    content: "\e[38;5;245m22:14:10.901\e[0m \e[38;5;245mdraft\e[0m Claude Codeに全部投げたら、寝てる間に\r\n"
+  - delay: 200
+    content: "\e[38;5;245m22:14:11.084\e[0m \e[38;5;245mdraft\e[0m SaaSが3つ完成してた。本当に。\r\n"
+
+  - delay: 300
+    content: "\e[38;5;245m22:14:11.342\e[0m \e[38;5;114minfo\e[0m  draft complete             \e[38;5;245mchars=84 input_tokens=2841 output_tokens=142 cost=$0.038\e[0m\r\n"
+  - delay: 200
+    content: "\e[38;5;245m22:14:11.498\e[0m \e[38;5;114minfo\e[0m  running safety filter      \e[38;5;245mchecks=pii,policy,profanity\e[0m\r\n"
+  - delay: 200
+    content: "\e[38;5;245m22:14:11.612\e[0m \e[38;5;114minfo\e[0m  safety passed              \e[38;5;245mscore=0.02\e[0m\r\n"
+
+  - delay: 280
+    content: "\e[38;5;245m22:14:11.847\e[0m \e[38;5;114minfo\e[0m  POST /2/tweets             \e[38;5;245mauth=Bearer eyJh...8f2x\e[0m\r\n"
   - delay: 600
-    content: "\e[90m→ Posting to X...\e[0m\r\n"
-  - delay: 800
-    content: "\e[32m✓ Published\e[0m \e[94mhttps://x.com/you/status/1789...\e[0m\r\n"
-  - delay: 300
-    content: "\e[90m→ Scheduling next post at 19:00 JST\e[0m\r\n"
-  - delay: 200
-    content: "\e[32m✓\e[0m Job queued (id: post_8f2x)\r\n"
+    content: "\e[38;5;245m22:14:12.421\e[0m \e[38;5;114minfo\e[0m  POST /2/tweets             \e[38;5;114m201\e[0m \e[38;5;245m574ms tweet_id=1789247318472\e[0m\r\n"
+
+  - delay: 220
+    content: "\e[38;5;245m22:14:12.601\e[0m \e[38;5;114minfo\e[0m  scheduling next run        \e[38;5;245mat=2026-05-17T19:00:00+09:00\e[0m\r\n"
+  - delay: 160
+    content: "\e[38;5;245m22:14:12.748\e[0m \e[38;5;114minfo\e[0m  job enqueued               \e[38;5;245mqueue=x-post id=job_01HXRA8F2X\e[0m\r\n"
+
   - delay: 400
     content: "\r\n"
+  - delay: 80
+    content: "  \e[38;5;245m✓\e[0m \e[38;5;114m1 job completed\e[0m \e[38;5;245min 4.34s\e[0m\r\n"
+  - delay: 120
+    content: "\r\n"
+  - delay: 80
+    content: "  posted    \e[38;5;114m12 / 15\e[0m  \e[38;5;245mtoday\e[0m\r\n"
+  - delay: 60
+    content: "  followers \e[38;5;114m+1,847\e[0m  \e[38;5;245mthis month\e[0m\r\n"
+  - delay: 60
+    content: "  cost      \e[38;5;114m$0.42\e[0m   \e[38;5;245mtoday\e[0m\r\n"
+  - delay: 600
+    content: "\r\n"
+
   - delay: 100
-    content: "\e[1;36m今日の自動投稿:\e[0m \e[1;32m12 / 15\e[0m\r\n"
-  - delay: 100
-    content: "\e[1;36m今月のフォロワー増:\e[0m \e[1;32m+1,847\e[0m\r\n"
-  - delay: 100
-    content: "\e[1;36m作業時間:\e[0m \e[1;32m0 時間\e[0m ☕\r\n"
-  - delay: 500
-    content: "\r\n\e[1;32m➜\e[0m \e[1;36mthreads-auto-post\e[0m \e[1;33m(main)\e[0m $ "
+    content: "\e[38;5;114mriku0\e[0m@\e[38;5;75mmac\e[0m \e[38;5;245mthreads-auto-post\e[0m \e[38;5;245m(main)\e[0m\r\n"
+  - delay: 50
+    content: "$ "
   - delay: 1500
     content: ""
